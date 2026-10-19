@@ -3,13 +3,12 @@ from llm import llm
 
 
 def writer_node(state: LinkedInState):
-    count=state["count"]+1
     prompt = f"""
 You are a LinkedIn content writer.
 
 Write a professional LinkedIn post about:
 
-{state["topic"]}
+{state["selected_topic"]}
 
 Research:
 {state["research"]}
@@ -37,5 +36,4 @@ the critic's feedback.
 
     return {
         "draft": response.content,
-        "count":count
     }
