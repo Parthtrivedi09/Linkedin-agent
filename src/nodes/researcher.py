@@ -1,16 +1,14 @@
-from langchain_community.tools import DuckDuckGoSearchResults
-from state import LinkedInState
 
-search_tool = DuckDuckGoSearchResults(
-    output_format="list",
-    num_results=5
-)
+from state import LinkedInState
+from nodes.topic_generator import search_web
 
 
 def researcher_node(state: LinkedInState):
-    query = f"Latest developments and insights about {state['topic']}"
+    topic = state["selected_topic"]
 
-    results = search_tool.invoke(query)
+    query = f"Latest developments, facts and insights about {topic}"
+
+    results = search_web(query)
 
     return {
         "research": str(results)

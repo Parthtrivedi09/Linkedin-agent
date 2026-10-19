@@ -6,6 +6,7 @@ from langgraph.types import Command
 from state import LinkedInState
 from nodes.topic_generator import topic_generator
 from nodes.topic_approval import topic_approval_node
+from nodes.researcher import researcher_node
 
 
 def generate_topics_node(state: LinkedInState):
@@ -20,10 +21,11 @@ builder = StateGraph(LinkedInState)
 
 builder.add_node("generate_topics", generate_topics_node)
 builder.add_node("topic_approval", topic_approval_node)
-
+builder.add_node("researcher", researcher_node)
 builder.add_edge(START, "generate_topics")
 builder.add_edge("generate_topics", "topic_approval")
-builder.add_edge("topic_approval", END)
+builder.add_edge("topic_approval", "researcher")
+builder.add_edge("researcher", END)
 
 checkpointer = MemorySaver()
 
@@ -56,3 +58,6 @@ result = graph.invoke(
 
 print("\nAPPROVED TOPIC:")
 print(result["selected_topic"])
+
+print("\nRESEARCH RESULTS:")
+print(result["research"])
